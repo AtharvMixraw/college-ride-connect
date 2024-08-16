@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
+import 'screens/profile/profile_screen.dart';
 
 class CollegeRideConnectApp extends StatelessWidget {
   const CollegeRideConnectApp({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class CollegeRideConnectApp extends StatelessWidget {
         '/': (context) => const HomeScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
+        '/profile': (context) => const ProfileScreen(),
       },
     );
   }

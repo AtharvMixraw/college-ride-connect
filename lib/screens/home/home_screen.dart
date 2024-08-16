@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                         child: Text(
-                          'Login',
+                          '  Login  ',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
@@ -87,18 +87,18 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(height: 15),
                     ElevatedButton(
                       onPressed: () => Navigator.pushNamed(context, '/register'),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                        child: Text(
-                          'Register',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Color(0xFFFF69B4), backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                           side: BorderSide(color: Color(0xFFFF69B4)),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(fontSize: 18),
                         ),
                       ),
                     ),

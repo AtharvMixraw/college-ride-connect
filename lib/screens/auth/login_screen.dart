@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../services/auth_service.dart';
+import '../profile/profile_screen.dart'; // Import the profile screen
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,7 +12,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
             left: 20,
             child: Image.asset('assets/images/signup_top.png', width: 100, height: 100),
           ),
-          // Positioned(
-          //   top: 20,
-          //   right: 20,
-          //   child: Image.asset('assets/images/image2.png', width: 100, height: 100),
-          // ),
           Positioned(
             bottom: 20,
             left: 20,
@@ -124,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 24),
                           ElevatedButton(
-                            onPressed: _login,
+                            onPressed: _mockLogin,
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
@@ -162,24 +156,30 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login() async {
+  void _mockLogin() {
     if (_formKey.currentState!.validate()) {
-      try {
-        final token = await _authService.login(
-          _emailController.text,
-          _passwordController.text,
-        );
-        // TODO: Save the token securely
+      // Simulate a delay to mimic network request
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(child: CircularProgressIndicator());
+        },
+      );
+
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.of(context).pop(); // Dismiss the loading dialog
+
+        // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful')),
         );
-        // TODO: Navigate to home screen
-        Navigator.of(context).pushReplacementNamed('/home');
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: $e')),
+
+        // Navigate to the profile screen
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => ProfileScreen()),
         );
-      }
+      });
     }
   }
 

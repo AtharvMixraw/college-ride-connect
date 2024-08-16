@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:college_ride_connect/services/auth_service.dart';
 import 'package:college_ride_connect/screens/home/home_screen.dart';
+import 'package:college_ride_connect/screens/profile/profile_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -144,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           SizedBox(height: 24),
                           ElevatedButton(
-                            onPressed: _register,
+                            onPressed: _mockRegister,
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
@@ -172,25 +173,60 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _register() async {
+//   void _register() async {
+//     if (_formKey.currentState!.validate()) {
+//       try {
+//         final token = await _authService.register(
+//           _emailController.text,
+//           _passwordController.text,
+//         );
+//         // TODO: Save the token securely
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           const SnackBar(content: Text('Registration successful')),
+//         );
+//         Navigator.of(context).pushReplacement(
+//           MaterialPageRoute(builder: (context) => HomeScreen()),
+//         );
+//       } catch (e) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(content: Text('Registration failed: $e')),
+//         );
+//       }
+//     }
+//   }
+//
+//   @override
+//   void dispose() {
+//     _emailController.dispose();
+//     _passwordController.dispose();
+//     _confirmPasswordController.dispose();
+//     super.dispose();
+//   }
+// }
+  void _mockRegister() {
     if (_formKey.currentState!.validate()) {
-      try {
-        final token = await _authService.register(
-          _emailController.text,
-          _passwordController.text,
-        );
-        // TODO: Save the token securely
+      // Simulate a delay to mimic network request
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(child: CircularProgressIndicator());
+        },
+      );
+
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.of(context).pop(); // Dismiss the loading dialog
+
+        // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration successful')),
         );
+
+        // Navigate to the profile screen
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => ProfileScreen()),
         );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration failed: $e')),
-        );
-      }
+      });
     }
   }
 
