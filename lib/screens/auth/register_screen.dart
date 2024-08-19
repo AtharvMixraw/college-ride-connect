@@ -4,7 +4,7 @@ import 'package:college_ride_connect/screens/home/home_screen.dart';
 import 'package:college_ride_connect/screens/profile/profile_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();

@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import '../profile/edit_profile_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Map<String, dynamic> userProfile = {
+    'name': 'John Doe',
+    'email': 'john.doe@example.com',
+    'college': 'Example University',
+    'major': 'Computer Science',
+    'year': 'Junior',
+  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Profile'),
+        title: Text('User Profile'),
         backgroundColor: Color(0xFFFF69B4),
       ),
       body: SingleChildScrollView(
@@ -15,29 +29,27 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 50,
               backgroundImage: AssetImage('assets/images/default_avatar.png'),
             ),
             SizedBox(height: 16),
-            const Text(
-              'John Doe',
+            Text(
+              userProfile['name'],
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
-              'john.doe@example.com',
+              userProfile['email'],
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             SizedBox(height: 24),
-            ProfileInfoCard(title: 'College', value: 'Example University'),
-            ProfileInfoCard(title: 'Major', value: 'Computer Science'),
-            ProfileInfoCard(title: 'Year', value: 'Junior'),
+            ProfileInfoCard(title: 'College', value: userProfile['college']),
+            ProfileInfoCard(title: 'Major', value: userProfile['major']),
+            ProfileInfoCard(title: 'Year', value: userProfile['year']),
             SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // TODO: Implement edit profile functionality
-              },
+              onPressed: _navigateToEditProfile,
               child: Text('Edit Profile'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFFF69B4),
@@ -48,6 +60,21 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateToEditProfile() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfileScreen(userProfile: userProfile),
+      ),
+    );
+
+    if (result != null && result is Map<String, dynamic>) {
+      setState(() {
+        userProfile = result;
+      });
+    }
   }
 }
 
