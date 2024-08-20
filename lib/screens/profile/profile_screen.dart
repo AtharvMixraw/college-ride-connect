@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../profile/edit_profile_screen.dart';
+import 'edit_profile_screen.dart';
+import 'package:college_ride_connect/screens/travel_plan/create_travel_plan_screen.dart';
+import 'package:college_ride_connect/screens/travel_plan/search_travel_plan_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -56,6 +58,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               ),
             ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _navigateToCreateTravelPlan,
+              child: Text('Create Travel Plan'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFF69B4),
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _navigateToSearchTravelPlan,
+              child: Text('Search Travel Plans'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFFF69B4),
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+            ),
           ],
         ),
       ),
@@ -75,6 +95,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         userProfile = result;
       });
     }
+  }
+
+  void _navigateToCreateTravelPlan() {
+    Navigator.pushNamed(context, '/create_travel_plan');
+  }
+
+  void _navigateToSearchTravelPlan() {
+    Navigator.pushNamed(context, '/search_travel_plan');
   }
 }
 
