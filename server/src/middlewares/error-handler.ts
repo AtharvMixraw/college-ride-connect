@@ -37,7 +37,7 @@ const errorHandlerMiddleware = (
     customError.statusCode = StatusCodes.NOT_FOUND
   }
 
-  return res.status(customError.statusCode).json({ msg: customError.msg })
+  return res.status(customError.statusCode).json({ msg: customError.msg, success: false })
 }
 
 export default errorHandlerMiddleware
