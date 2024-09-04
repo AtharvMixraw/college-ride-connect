@@ -11,7 +11,7 @@ College Ride Connect is a mobile application built with Flutter, designed to con
 - [Usage](#usage)
 - [Benefits](#benefits)
 - [Contributing](#contributing)
-- [Team](#team)
+  
 
 ## Features
 
@@ -71,14 +71,6 @@ We welcome contributions to College Ride Connect! If you have suggestions or wan
 4. Push to the branch (`git push origin feature/AmazingFeature`).
 5. Open a Pull Request.
 
-## Team
 
-- Atharv Mishra (2022BCS0115)
-- Shashank Upadhyay (2022BCS0088)
-- Srinivas Raghav (2022BCS0016)
-- Ojas More (2022BCD0043)
-- Rishi Jain (2022BCD0007)
 
----
-
-For more information or support, please contact [your-email@example.com](mailto:your-email@example.com).
+For more information or support, please contact [Email](mailto:antilogatharv@gmail.com).
