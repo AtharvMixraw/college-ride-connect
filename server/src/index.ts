@@ -37,7 +37,7 @@ const options = {
       },
     ],
   },
-  apis: ["./routers/*.ts"],
+  apis: [`${__dirname}/routers/*.ts`],
 }
 const spacs = swaggerJSDoc(options)
 app.use("/api/v1/api-docs", swaggerUI.serve, swaggerUI.setup(spacs))
