@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRide, getAllRides, getRide, updateRide, deleteRide } from '../controllers/rideController';
+import { createRide, getAllRides, getRide, updateRide, deleteRide, sendJoinRequest, handleJoinRequest } from '../controllers/rideController';
 import { authenticateUser } from '../middlewares/authMiddleware';
 
 const router = express.Router();
@@ -167,5 +167,73 @@ router.route('/:id')
   .get(getRide)
   .put(authenticateUser, updateRide)
   .delete(authenticateUser, deleteRide);
+
+/**
+ * @swagger
+ * /rides/{rideId}/join-request:
+ *   post:
+ *     summary: Send a join request for a ride
+ *     tags: [Rides]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: rideId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Join request sent successfully
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Ride not found
+ * 
+ * /rides/{rideId}/join-request/{requestId}:
+ *   put:
+ *     summary: Handle a join request for a ride
+ *     tags: [Rides]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: rideId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: requestId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [accepted, rejected]
+ *     responses:
+ *       200:
+ *         description: Join request handled successfully
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Ride or request not found
+ */
+
+router.post('/:rideId/join-request', authenticateUser, sendJoinRequest);
+router.put('/:rideId/join-request/:requestId', authenticateUser, handleJoinRequest);
+
 
 export default router;
