@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { NotFoundError, BadRequestError, UnauthorizedError } from "../errors/index";
 import Ride from "../models/Ride";
 import User from "../models/User";
+import mongoose from "mongoose";
 
 const createRide = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
@@ -86,4 +87,74 @@ const deleteRide = async (req: Request, res: Response) => {
   res.status(200).json({ msg: "Ride deleted successfully", success: true });
 };
 
-export { createRide, getAllRides, getRide, updateRide, deleteRide };
+const sendJoinRequest = async (req: Request, res: Response) => {
+  const userId = req.user?.userId;
+  const { rideId } = req.params;
+
+  const ride = await Ride.findById(rideId);
+  if (!ride) {
+    throw new NotFoundError("Ride not found");
+  }
+
+  if (ride.availableSeats <= 0) {
+    throw new BadRequestError("No seats available on this ride");
+  }
+
+  const existingRequest = ride.requests.find(request => request.user.toString() === userId);
+  if (existingRequest) {
+    throw new BadRequestError("You have already sent a request for this ride");
+  }
+
+  
+
+  ride.requests.push({ user: new mongoose.Types.ObjectId(userId), status: 'pending' });
+  await ride.save();
+
+  res.status(200).json({ message: "Join request sent successfully", success: true });
+};
+
+const handleJoinRequest = async (req: Request, res: Response) => {
+  const creatorId = req.user?.userId;
+  const { rideId, requestId } = req.params;
+  const { status } = req.body;
+
+  if (status !== 'accepted' && status !== 'rejected') {
+    throw new BadRequestError("Invalid status. Must be 'accepted' or 'rejected'");
+  }
+
+  const ride = await Ride.findById(rideId);
+  if (!ride) {
+    throw new NotFoundError("Ride not found");
+  }
+
+  if (ride.creator.toString() !== creatorId) {
+    throw new UnauthorizedError("Not authorized to handle requests for this ride");
+  }
+
+  const request = ride.requests.find(
+    request => request.user.toString() === requestId
+  );
+  if (!request) {
+    throw new NotFoundError("Request not found");
+  }
+
+  if (request.status !== 'pending') {
+    throw new BadRequestError("This request has already been handled");
+  }
+
+  request.status = status;
+
+  if (status === 'accepted') {
+    if (ride.availableSeats <= 0) {
+      throw new BadRequestError("No seats available on this ride");
+    }
+    ride.passengers.push(request.user);
+    ride.availableSeats -= 1;
+  }
+
+  await ride.save();
+
+  res.status(200).json({ message: `Join request ${status}`, success: true });
+};
+
+export { createRide, getAllRides, getRide, updateRide, deleteRide, sendJoinRequest, handleJoinRequest };
