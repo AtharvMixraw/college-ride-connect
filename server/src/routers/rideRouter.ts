@@ -1,5 +1,5 @@
 import express from 'express';
-import { createRide, getAllRides, getRide, updateRide, deleteRide, sendJoinRequest, handleJoinRequest } from '../controllers/rideController';
+import { createRide, getAllRides, getRide, updateRide, deleteRide, sendJoinRequest, handleJoinRequest, leaveRide } from '../controllers/rideController';
 import { authenticateUser } from '../middlewares/authMiddleware';
 
 const router = express.Router();
@@ -230,10 +230,34 @@ router.route('/:id')
  *         description: Forbidden
  *       404:
  *         description: Ride or request not found
+ * 
+ * /rides/{rideId}/leave:
+ *   post:
+ *     summary: Leave a ride as a passenger
+ *     tags: [Rides]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: rideId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully left the ride
+ *       400:
+ *         description: Bad request - Not a passenger on this ride
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Ride not found
+ *       500:
+ *         description: Server error
  */
 
 router.post('/:rideId/join-request', authenticateUser, sendJoinRequest);
 router.put('/:rideId/join-request/:requestId', authenticateUser, handleJoinRequest);
-
+router.post('/:rideId/leave', authenticateUser, leaveRide);
 
 export default router;

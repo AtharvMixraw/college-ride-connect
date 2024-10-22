@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import 'express-async-errors'
+import { createServer } from 'http';
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUI from "swagger-ui-express"
 import errorHandlerMiddleware from "./middlewares/error-handler"
@@ -10,13 +11,19 @@ import connectDB from "./db/connect"
 import authRouter from "./routers/authRouter"
 import profileRouter from "./routers/profileRouter"
 import rideRouter from "./routers/rideRouter"
+import WebSocketService from './services/WebSocketService';
+import { initializeWebSocket } from './controllers/rideController';
 
 dotenv.config()
 
 const app: Express = express()
+const httpServer = createServer(app);
 
 app.use(express.json())
 app.use(cors())
+
+const wsService = new WebSocketService(httpServer);
+initializeWebSocket(wsService);
 
 app.get("/api/v1", (req: Request, res: Response) => {
   res.send("Welcome to the server")
