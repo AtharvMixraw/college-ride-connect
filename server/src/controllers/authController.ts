@@ -33,9 +33,13 @@ const login = async (req: Request, res: Response): Promise<void> => {
   }
 
   const token = JWT.sign(
-    { userId: user._id },
+    { 
+      userId: user._id,
+      email: user.email,
+      name: user.name
+    },
     process.env.JWT_SECRET as string,
-    { expiresIn: "1d" }
+    { expiresIn: process.env.JWT_EXPIRE }
   )
 
   res.status(200).json({ user, token, success: true })
